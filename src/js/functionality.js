@@ -157,7 +157,7 @@ function prevYear() {
   updateCalendar();
 }
 
-// ฟังก์ชั่นสำหรับเลื่อนปีไปปีถัดไป
+// ฟังก์ชั่นสำหรับเลื่อนปีไปปีถัดไป 
 function nextYear() {
   // ดูตัวอย่างจากฟังก์ชั่น prevYear()1
   currentYear += 1;
