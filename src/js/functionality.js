@@ -127,6 +127,15 @@ function insertCalendar() {
         node.setAttribute("onclick", "showModal(" + String(currentDay) + ")");
         node.className = "day";
         node.innerHTML = '<div class="date">' + String(currentDay) + "</div>";
+        //      +
+        //     `<div class="event">
+        //   <div class="event-desc">
+        //     Career development @ Community College room #402
+        //   </div>
+        //   <div class="event-time">
+        //     2:00pm to 5:00pm
+        //   </div>
+        // </div>`
         row.appendChild(node);
         currentDay += 1;
       } else {
@@ -203,10 +212,9 @@ function showModal(day) {
   let key =
     String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
 
-    dbg(key,eStore[key]);
+  dbg(key, eStore[key]);
   if (eStore[key] != null) {
     for (let i of eStore[key]) {
-      dbg("SHOW ME BROOOO");
       modal_body.innerHTML +=
         '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
         i["desc"] +
@@ -214,13 +222,13 @@ function showModal(day) {
         '<input type="text" class="modal-times" placeholder="เวลา" value="' +
         i["time"] +
         '">' +
-        '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br>';
+        '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
     }
   }
 
   modal_body.innerHTML +=
-    '<div class="modal-body" id="modal-body"><textarea id="desc" class="modal-descriptions" placeholder="รายละเอียด"></textarea><br>'+
-    '<input type="text" id="time" class="modal-times" placeholder="เวลา"><span onclick="addEvent()"><i class="fa-regular fa-calendar-plus"></i></span><br></div>';
+    '<textarea id="desc" class="modal-descriptions" placeholder="รายละเอียด"></textarea><br>' +
+    '<input type="text" id="time" class="modal-times" placeholder="เวลา"><span onclick="addEvent()"><i class="fa-regular fa-calendar-plus"></i></span><br>';
 }
 
 // ฟังก์ชั่นสำหรับจัดการการกดปุ่มเพิ่มนัด
@@ -233,7 +241,7 @@ function addEvent() {
     String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
 
   let arr = eStore[key] || [];
-  arr.push({ "desc": desc, "time": time });
+  arr.push({ desc: desc, time: time });
   eStore[key] = arr;
   dbg(eStore);
   // postDataToServer();
@@ -246,7 +254,7 @@ function addEvent() {
     '<input type="text" class="modal-times" placeholder="เวลา" value="' +
     time +
     '">' +
-    '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br>' +
+    '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>' +
     modal_body.innerHTML;
 }
 
