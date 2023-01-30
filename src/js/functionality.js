@@ -50,6 +50,21 @@ var currentYear = date.getFullYear();
     "2022-11-7": [{"id": 0, "desc": "นัดเจอแฟนเก่าวันที่ 7 ธันวาคม", "time": "10 โมงที่เก่า"}]
 }
 */
+// let json = {
+//   key1: "value",
+//   key2: {
+//     "key2-1": "value2-1",
+//     "key-2-2": ["value2-2-1", "value2-2-2"],
+//   },
+// };
+
+// let st = JSON.stringify(eStore);
+// let obj = JSON.parse(st);
+
+// obj["key2"];
+// obj["key2"]["key2-1"];
+// obj["key2"]["key-2-2"][1];
+
 let eStore = {}; // ให้ใช้ API เรียกข้อมูล JSON มาจากฐานข้อมูลเซิฟเวอร์
 
 // ตัวอย่างการใช้ GET JSON
@@ -157,7 +172,7 @@ function prevYear() {
   updateCalendar();
 }
 
-// ฟังก์ชั่นสำหรับเลื่อนปีไปปีถัดไป 
+// ฟังก์ชั่นสำหรับเลื่อนปีไปปีถัดไป
 function nextYear() {
   // ดูตัวอย่างจากฟังก์ชั่น prevYear()1
   currentYear += 1;
@@ -176,10 +191,36 @@ function showModal(day) {
   let modal = document.getElementById("detail-modal");
 
   modal.style.display = "block";
+  currentDay = day;
 
   let h = document.getElementById("modal-h2");
   h.innerHTML =
     String(day) + " " + months[currentMonth] + " " + String(currentYear);
+  var modal_body = document.getElementById("modal-body");
+
+  modal_body.innerHTML = " ";
+
+  let key =
+    String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
+
+    dbg(key,eStore[key]);
+  if (eStore[key] != null) {
+    for (let i of eStore[key]) {
+      dbg("SHOW ME BROOOO");
+      modal_body.innerHTML +=
+        '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
+        i["desc"] +
+        "</textarea><br>" +
+        '<input type="text" class="modal-times" placeholder="เวลา" value="' +
+        i["time"] +
+        '">' +
+        '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br>';
+    }
+  }
+
+  modal_body.innerHTML +=
+    '<div class="modal-body" id="modal-body"><textarea id="desc" class="modal-descriptions" placeholder="รายละเอียด"></textarea><br>'+
+    '<input type="text" id="time" class="modal-times" placeholder="เวลา"><span onclick="addEvent()"><i class="fa-regular fa-calendar-plus"></i></span><br></div>';
 }
 
 // ฟังก์ชั่นสำหรับจัดการการกดปุ่มเพิ่มนัด
@@ -188,17 +229,29 @@ function addEvent() {
   var desc = document.getElementById("desc").value;
   var time = document.getElementById("time").value;
   dbg(desc, time);
+  let key =
+    String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
+
+  let arr = eStore[key] || [];
+  arr.push({ "desc": desc, "time": time });
+  eStore[key] = arr;
+  dbg(eStore);
+  // postDataToServer();
 
   var modal_body = document.getElementById("modal-body");
-  modal_body.innerHTML = 
-  '<textarea id="desc" class="modal-descriptions" placeholder="รายละเอียด">'+desc+'</textarea><br>'
-  +'<input type="text" id="time" class="modal-times" placeholder="เวลา" value="'+time+'"> '
-  +'<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br>'
-  +modal_body.innerHTML;
+  modal_body.innerHTML =
+    '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
+    desc +
+    "</textarea><br>" +
+    '<input type="text" class="modal-times" placeholder="เวลา" value="' +
+    time +
+    '">' +
+    '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br>' +
+    modal_body.innerHTML;
 }
 
-function removeEvent(){
-    dbg("remove event clicked");
+function removeEvent() {
+  dbg("remove event clicked");
 }
 // ฟังก์ชั่นเมื่อมีการกดปิด Modal
 function closeModal() {

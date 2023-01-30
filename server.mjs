@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
             'Content-Type': 'text/html; charset=UTF-8'
         }
     };
-
     res.sendFile('src/index.html', options);
 });
 
@@ -74,5 +73,6 @@ app.post('/data', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log("Server started");
+    // console.log("Server started in port  "+ port);
+    console.log(`Server started in port ${port}`);
 });
