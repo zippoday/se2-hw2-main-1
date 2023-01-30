@@ -197,6 +197,7 @@ function prevMonth() {
   if (currentMonth < 0) {
     currentMonth = 11;
   }
+  clearSummary();
 
   updateCalendar();
 }
@@ -206,6 +207,7 @@ function nextMonth() {
   // ตัวแปร currentMonth ควรมีค่าตั้งแต่ 0-11 (0 คือ มกราคม, 11 คือ ธันวาคม)
   // เพิ่มค่าตัวแปร currentMonth อีก 1 ถ้าเพิ่มแล้วเกิน 12 ให้วนกลับไป 0
   currentMonth = (currentMonth + 1) % 12;
+  clearSummary();
 
   updateCalendar();
 }
@@ -219,6 +221,7 @@ function prevYear() {
   if (currentYear < 0) {
     currentYear = 0;
   }
+  clearSummary();
 
   updateCalendar();
 }
@@ -227,6 +230,8 @@ function prevYear() {
 function nextYear() {
   // ดูตัวอย่างจากฟังก์ชั่น prevYear()1
   currentYear += 1;
+  clearSummary();
+
   updateCalendar();
 }
 
@@ -357,14 +362,19 @@ function closeModal() {
 }
 function clearSummary() {
   document.getElementById("event-list").innerHTML = "";
+  let eventList = document.getElementById("event-list");
+  eventList.innerHTML = "";
 }
 // ฟังก์ชั่นสำหรับใส่ข้อมูลส่วนสรุปนัดทั้งหมด
 // ตอนนี้ส่วนแสดงผลได้ใช้ ordered list (<ol>) ในการแสดงผล และยังไม่มีการตกแต่งใดๆ ให้นักเรียนแก้ไขฟังก์ชั่นนี้ให้การแสดงผลสวยงาม เช่น ใส่ css ให้กับ list หรือ แก้ list ให้เป็น table หรือ element ประเภทอื่นๆ และเพิ่ม CSS ให้มัน
 function populateSummary() {
+  
+  dbg("GGGGGGGG");
   let key = String(currentYear) + " " + String(currentMonth);
   let events = eStore[key];
   let eventList = document.getElementById("event-list");
-  eventList.innerHTML = "";
+  // eventList.innerHTML = "";
+  // document.getElementById("event-list").innerHTML = "";
   if (events) {
     events.forEach(function (event) {
       let eventItem = document.createElement("li");
