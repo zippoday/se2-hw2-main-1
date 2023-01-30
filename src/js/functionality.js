@@ -285,7 +285,7 @@ function addEvent() {
 function removeEvent() {
   dbg("remove event clicked");
   var modal_body = document.getElementById("modal-body");
-  modal_body.innerHTML = "";
+  modal_body.innerHTML += "";
 }
 // ฟังก์ชั่นเมื่อมีการกดปิด Modal
 function closeModal() {
@@ -297,20 +297,20 @@ function closeModal() {
   populateSummary();
 }
 function clearSummary() {
-  document.getElementById("event-list").innerHTML ="";
+  document.getElementById("event-list").innerHTML = "";
 }
 // ฟังก์ชั่นสำหรับใส่ข้อมูลส่วนสรุปนัดทั้งหมด
 // ตอนนี้ส่วนแสดงผลได้ใช้ ordered list (<ol>) ในการแสดงผล และยังไม่มีการตกแต่งใดๆ ให้นักเรียนแก้ไขฟังก์ชั่นนี้ให้การแสดงผลสวยงาม เช่น ใส่ css ให้กับ list หรือ แก้ list ให้เป็น table หรือ element ประเภทอื่นๆ และเพิ่ม CSS ให้มัน
 function populateSummary() {
-  let key =
-    String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
-    var ol_lists = document.getElementById("event-list");
-    if (eStore[key] != null) {
-    for (let i of eStore[key]) {
-      ol_lists.innerHTML = `<li>` + 
-      String(currentDay) + String(currentMonth) + String(currentYear) + ` : ` +
-      i["desc"] + ` // ` + i[time];
-    }
+  let key = String(currentYear) + " " + String(currentMonth);
+  let events = eStore[key];
+  let eventList = document.getElementById("event-list");
+  eventList.innerHTML = "";
+  if (events) {
+    events.forEach(function(event) {
+      let eventItem = document.createElement("li");
+      eventItem.innerHTML = currentDay + " " + currentMonth + " " + currentYear + " : " + event.desc + " // " + event.time;
+      eventList.appendChild(eventItem);
+    });
   }
-  dbg("GGEZ");
 }
