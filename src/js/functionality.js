@@ -112,7 +112,7 @@ function updateCalendar() {
   // ใส่ค่าที่อัพเดทให้กับปฏิทินth
   document.getElementById("currentMonth").innerHTML = months[currentMonth];
   document.getElementById("currentYear").innerHTML = currentYear;
-
+  populateSummary();
   insertCalendar();
 }
 
@@ -283,9 +283,56 @@ function addEvent() {
 }
 
 function removeEvent() {
-  dbg("remove event clicked");
-  var modal_body = document.getElementById("modal-body");
-  modal_body.innerHTML += "";
+  // dbg("remove event clicked");
+  // var modal_body = document.getElementById("modal-body");
+  // modal_body.innerHTML += "";
+  // var modalBody = document.getElementById("modal-body");
+  // var eventNodes = modalBody.getElementsByTagName("textarea");
+  // if (eventNodes.length === 0) {
+  //   return;
+  // }
+  // var eventNode = eventNodes[eventNodes.length - 1].parentNode;
+  // var desc = eventNode.getElementsByClassName("modal-descriptions")[0].value;
+  // var time = eventNode.getElementsByClassName("modal-times")[0].value;
+  // var key =
+  //   String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
+  // var events = eStore[key];
+  // var index = -1;
+  // for (var i = 0; i < events.length; i++) {
+  //   if (events[i].desc === desc && events[i].time === time) {
+  //     index = i;
+  //     break;
+  //   }
+  // }
+  // if (index !== -1) {
+  //   events.splice(index, 1);
+  //   eStore[key] = events;
+  //   postDataToServer();
+  //   eventNode.remove();
+  // }
+
+  // var descNode = document.getElementsByClassName("modal-descriptions")[0];
+  // var timeNode = document.getElementsByClassName("modal-times")[0];
+  // descNode.remove();
+  // timeNode.remove();
+
+  var desc = document.getElementsByClassName("modal-descriptions")[0].value;
+  var time = document.getElementsByClassName("modal-times")[0].value;
+  var key =
+    String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
+  var events = eStore[key];
+  var index = -1;
+  for (var i = 0; i < events.length; i++) {
+    if (events[i].desc === desc && events[i].time === time) {
+      index = i;
+      break;
+    }
+  }
+  if (index !== -1) {
+    events.splice(index, 1);
+    eStore[key] = events;
+    postDataToServer();
+  }
 }
 // ฟังก์ชั่นเมื่อมีการกดปิด Modal
 function closeModal() {
@@ -307,9 +354,18 @@ function populateSummary() {
   let eventList = document.getElementById("event-list");
   eventList.innerHTML = "";
   if (events) {
-    events.forEach(function(event) {
+    events.forEach(function (event) {
       let eventItem = document.createElement("li");
-      eventItem.innerHTML = currentDay + " " + currentMonth + " " + currentYear + " : " + event.desc + " // " + event.time;
+      eventItem.innerHTML =
+        currentDay +
+        " " +
+        currentMonth +
+        " " +
+        currentYear +
+        " : " +
+        event.desc +
+        " // " +
+        event.time;
       eventList.appendChild(eventItem);
     });
   }
