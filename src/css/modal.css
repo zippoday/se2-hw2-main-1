@@ -66,3 +66,27 @@
     overflow-y: auto;
     height: 400px;
 }
+
+#event-summary {
+    padding-left: 20px;
+}
+h1{
+    color: #8e352e;
+}
+
+#event-list{
+    padding: 0;
+}
+ol#event-list li {
+    margin: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #8e352e;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+#event-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
