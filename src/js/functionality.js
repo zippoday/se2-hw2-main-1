@@ -124,6 +124,8 @@ function insertCalendar() {
 
   for (var r = 1; r < 7; r++) {
     var row = document.getElementById("week" + String(r));
+    var under = document.getElementById("event-list");
+
     dbg("week" + String(r));
 
     for (var d = 0; d < 7; d++) {
@@ -140,9 +142,11 @@ function insertCalendar() {
 
       if (dNow.getDay() == d && currentDay <= maxDate) {
         var node = document.createElement("td");
+        
         node.setAttribute("onclick", "showModal(" + String(currentDay) + ")");
         node.className = "day";
         node.innerHTML = '<div class="date">' + String(currentDay) + "</div>";
+
         if (eStore[key] != null) {
           for (let i of eStore[key]) {
             node.innerHTML +=
@@ -158,6 +162,20 @@ function insertCalendar() {
               `
               </div>
             </div>`;
+            if (i["desc"] != null || i["time"] != null) {
+              var under_node = document.createElement("li");
+              under_node.innerHTML =
+                String(currentDay) +
+                ` ` +
+                String(currentMonth) +
+                ` ` +
+                String(currentYear) +
+                ` : ` +
+                i["desc"] +
+                ` // ` +
+                i["time"];
+        under.appendChild(under_node);
+            }
           }
         }
         row.appendChild(node);
