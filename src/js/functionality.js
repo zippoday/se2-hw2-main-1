@@ -283,56 +283,28 @@ function addEvent() {
 }
 
 function removeEvent() {
-  // dbg("remove event clicked");
-  // var modal_body = document.getElementById("modal-body");
-  // modal_body.innerHTML += "";
-  // var modalBody = document.getElementById("modal-body");
-  // var eventNodes = modalBody.getElementsByTagName("textarea");
-  // if (eventNodes.length === 0) {
-  //   return;
-  // }
-  // var eventNode = eventNodes[eventNodes.length - 1].parentNode;
-  // var desc = eventNode.getElementsByClassName("modal-descriptions")[0].value;
-  // var time = eventNode.getElementsByClassName("modal-times")[0].value;
-  // var key =
-  //   String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
-  // var events = eStore[key];
-  // var index = -1;
-  // for (var i = 0; i < events.length; i++) {
-  //   if (events[i].desc === desc && events[i].time === time) {
-  //     index = i;
-  //     break;
-  //   }
-  // }
-  // if (index !== -1) {
-  //   events.splice(index, 1);
-  //   eStore[key] = events;
-  //   postDataToServer();
-  //   eventNode.remove();
-  // }
-
-  // var descNode = document.getElementsByClassName("modal-descriptions")[0];
-  // var timeNode = document.getElementsByClassName("modal-times")[0];
-  // descNode.remove();
-  // timeNode.remove();
-
-  var desc = document.getElementsByClassName("modal-descriptions")[0].value;
-  var time = document.getElementsByClassName("modal-times")[0].value;
-  var key =
+  // ใช้ document.getElementById ดึงค่า id=desc กับ id=time ออกมา และเพิ่มเข้าไปในฐานข้อมูล รวมถึงอัพเดทหน้า Modal ให้แสดงผลนัดที่เพิ่มเข้าไป
+  var desc = document.getElementById("desc").value;
+  var time = document.getElementById("time").value;
+  dbg(desc, time);
+  let key =
     String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
-  var events = eStore[key];
-  var index = -1;
-  for (var i = 0; i < events.length; i++) {
-    if (events[i].desc === desc && events[i].time === time) {
-      index = i;
-      break;
-    }
-  }
-  if (index !== -1) {
-    events.splice(index, 1);
-    eStore[key] = events;
-    postDataToServer();
-  }
+
+  let arr = eStore[key] || [];
+  arr.push({ desc: desc, time: time });
+  eStore[key] = "";
+  dbg(eStore);
+  postDataToServer();
+
+  var modal_body = document.getElementById("modal-body");
+  modal_body.innerHTML =
+    '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
+    desc +
+    "</textarea><br>" +
+    '<input type="text" class="modal-times" placeholder="เวลา" value="' +
+    time +
+    '">' +
+    '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
 }
 // ฟังก์ชั่นเมื่อมีการกดปิด Modal
 function closeModal() {
