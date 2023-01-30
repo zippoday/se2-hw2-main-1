@@ -108,12 +108,12 @@ function clearCalendar() {
 // ฟังก์ชั่นสำหรับอัพเดทปฏิทิน คือ ล้างก่อน แล้วเติมข้อมูล
 function updateCalendar() {
   clearCalendar();
+  insertCalendar();
 
   // ใส่ค่าที่อัพเดทให้กับปฏิทินth
   document.getElementById("currentMonth").innerHTML = months[currentMonth];
   document.getElementById("currentYear").innerHTML = currentYear;
   populateSummary();
-  insertCalendar();
 }
 
 function insertCalendar() {
@@ -142,7 +142,7 @@ function insertCalendar() {
 
       if (dNow.getDay() == d && currentDay <= maxDate) {
         var node = document.createElement("td");
-        
+
         node.setAttribute("onclick", "showModal(" + String(currentDay) + ")");
         node.className = "day";
         node.innerHTML = '<div class="date">' + String(currentDay) + "</div>";
@@ -174,7 +174,7 @@ function insertCalendar() {
                 i["desc"] +
                 ` // ` +
                 i["time"];
-        under.appendChild(under_node);
+              under.appendChild(under_node);
             }
           }
         }
@@ -264,8 +264,8 @@ function showModal(day) {
         '<input type="text" class="modal-times" placeholder="เวลา" value="' +
         i["time"] +
         '">' +
-        '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
-    }
+        '<span onclick="removeEvent('+eStore[key].indexOf(i)+')"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
+      }
   }
 
   modal_body.innerHTML +=
@@ -300,30 +300,52 @@ function addEvent() {
     modal_body.innerHTML;
 }
 
-function removeEvent() {
+function removeEvent(ind) {
   // ใช้ document.getElementById ดึงค่า id=desc กับ id=time ออกมา และเพิ่มเข้าไปในฐานข้อมูล รวมถึงอัพเดทหน้า Modal ให้แสดงผลนัดที่เพิ่มเข้าไป
-  var desc = document.getElementById("desc").value;
-  var time = document.getElementById("time").value;
-  dbg(desc, time);
+  // var desc = document.getElementById("desc").value;
+  // var time = document.getElementById("time").value;
+  // dbg(desc, time);
+  // let key =
+  //   String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
+
+  // let arr = eStore[key] || [];
+  // arr.push({ desc: desc, time: time });
+  // eStore[key] = "";
+  // dbg(eStore);
+  // postDataToServer();
+
+  // var modal_body = document.getElementById("modal-body");
+  // modal_body.innerHTML =
+  //   '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
+  //   desc +
+  //   "</textarea><br>" +
+  //   '<input type="text" class="modal-times" placeholder="เวลา" value="' +
+  //   time +
+  //   '">' +
+  //   '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
+
+  let desc = document.getElementsByClassName("modal-descriptions")[ind].value;
+  let time = document.getElementsByClassName("modal-times")[ind].value;
   let key =
     String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
-
+    
   let arr = eStore[key] || [];
-  arr.push({ desc: desc, time: time });
-  eStore[key] = "";
+  dbg(key,"Key Tracking!");
+  dbg(eStore[key][0],"eStore Tracking!");
+  dbg(time);
+  let index = arr.findIndex(
+    (event) => event.desc === desc && event.time === time
+  );
+  if (index === -1) return;
+  arr.splice(index, 1);
+  eStore[key] = arr;
   dbg(eStore);
   postDataToServer();
-
-  var modal_body = document.getElementById("modal-body");
-  modal_body.innerHTML =
-    '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
-    desc +
-    "</textarea><br>" +
-    '<input type="text" class="modal-times" placeholder="เวลา" value="' +
-    time +
-    '">' +
-    '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
+  document.getElementsByClassName("modal-descriptions")[ind].remove();
+  document.getElementsByClassName("modal-times")[ind].remove();
+  // document.getElementsByClassName
 }
+
 // ฟังก์ชั่นเมื่อมีการกดปิด Modal
 function closeModal() {
   let modal = document.getElementById("detail-modal");
