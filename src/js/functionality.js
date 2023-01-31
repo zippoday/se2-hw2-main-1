@@ -166,9 +166,9 @@ function insertCalendar() {
               var under_node = document.createElement("li");
               under_node.innerHTML =
                 String(currentDay) +
-                ` ` +
-                String(currentMonth) +
-                ` ` +
+                `:` +
+                String(currentMonth+1) +
+                `:` +
                 String(currentYear) +
                 ` : ` +
                 i["desc"] +
