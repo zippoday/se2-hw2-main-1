@@ -108,12 +108,13 @@ function clearCalendar() {
 // ฟังก์ชั่นสำหรับอัพเดทปฏิทิน คือ ล้างก่อน แล้วเติมข้อมูล
 function updateCalendar() {
   clearCalendar();
+  clearSummary();
   insertCalendar();
 
   // ใส่ค่าที่อัพเดทให้กับปฏิทินth
   document.getElementById("currentMonth").innerHTML = months[currentMonth];
   document.getElementById("currentYear").innerHTML = currentYear;
-  populateSummary();
+  // populateSummary();
 }
 
 function insertCalendar() {
@@ -231,7 +232,6 @@ function nextYear() {
   // ดูตัวอย่างจากฟังก์ชั่น prevYear()1
   currentYear += 1;
   clearSummary();
-
   updateCalendar();
 }
 
@@ -306,28 +306,6 @@ function addEvent() {
 }
 
 function removeEvent(ind) {
-  // ใช้ document.getElementById ดึงค่า id=desc กับ id=time ออกมา และเพิ่มเข้าไปในฐานข้อมูล รวมถึงอัพเดทหน้า Modal ให้แสดงผลนัดที่เพิ่มเข้าไป
-  // var desc = document.getElementById("desc").value;
-  // var time = document.getElementById("time").value;
-  // dbg(desc, time);
-  // let key =
-  //   String(currentYear) + " " + String(currentMonth) + " " + String(currentDay);
-
-  // let arr = eStore[key] || [];
-  // arr.push({ desc: desc, time: time });
-  // eStore[key] = "";
-  // dbg(eStore);
-  // postDataToServer();
-
-  // var modal_body = document.getElementById("modal-body");
-  // modal_body.innerHTML =
-  //   '<textarea  class="modal-descriptions" placeholder="รายละเอียด">' +
-  //   desc +
-  //   "</textarea><br>" +
-  //   '<input type="text" class="modal-times" placeholder="เวลา" value="' +
-  //   time +
-  //   '">' +
-  //   '<span onclick="removeEvent()"><i class="fa-regular fa-calendar-xmark"></i></span><br><br>';
 
   let desc = document.getElementsByClassName("modal-descriptions")[ind].value;
   let time = document.getElementsByClassName("modal-times")[ind].value;
@@ -348,6 +326,7 @@ function removeEvent(ind) {
   postDataToServer();
   document.getElementsByClassName("modal-descriptions")[ind].remove();
   document.getElementsByClassName("modal-times")[ind].remove();
+  document.getElementsByClassName("fa-calendar-xmark")[ind].remove();
   // document.getElementsByClassName
 }
 
@@ -358,7 +337,7 @@ function closeModal() {
   modal.style.display = "none";
   saveData();
   updateCalendar();
-  // populateSummary();
+  populateSummary();
 }
 function clearSummary() {
   document.getElementById("event-list").innerHTML = "";
@@ -368,8 +347,6 @@ function clearSummary() {
 // ฟังก์ชั่นสำหรับใส่ข้อมูลส่วนสรุปนัดทั้งหมด
 // ตอนนี้ส่วนแสดงผลได้ใช้ ordered list (<ol>) ในการแสดงผล และยังไม่มีการตกแต่งใดๆ ให้นักเรียนแก้ไขฟังก์ชั่นนี้ให้การแสดงผลสวยงาม เช่น ใส่ css ให้กับ list หรือ แก้ list ให้เป็น table หรือ element ประเภทอื่นๆ และเพิ่ม CSS ให้มัน
 function populateSummary() {
-  
-  dbg("GGGGGGGG");
   let key = String(currentYear) + " " + String(currentMonth);
   let events = eStore[key];
   let eventList = document.getElementById("event-list");
