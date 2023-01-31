@@ -358,7 +358,7 @@ function closeModal() {
   modal.style.display = "none";
   saveData();
   updateCalendar();
-  populateSummary();
+  // populateSummary();
 }
 function clearSummary() {
   document.getElementById("event-list").innerHTML = "";
